@@ -1,0 +1,323 @@
+/* ==========================================================================
+   GALAXIA DE FLORES AMARILLAS 21 DE SEPTIEMBRE - ESTILOS RESPONSIVE
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body {
+  background-color: #020205;
+  overflow: hidden;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: #fff;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Canvas Fondo Espacial */
+#spaceCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Contenedor Órbita */
+.galaxy-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Header Superior Adaptable */
+.title-banner {
+  position: fixed;
+  top: 20px;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+  padding: 0 10px;
+}
+
+.title-banner h1 {
+  font-size: clamp(1.1rem, 4vw, 1.7rem);
+  letter-spacing: 2px;
+  color: #ffee55;
+  text-shadow: 
+    0 0 12px rgba(255, 230, 0, 0.9),
+    0 0 25px rgba(255, 165, 0, 0.8);
+  font-weight: 900;
+}
+
+.title-banner p {
+  font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+  color: #ffd700;
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+/* Ramos y Etiquetas Flotantes Adaptables */
+.flower-node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: filter 0.3s ease;
+  will-change: transform, left, top;
+}
+
+.flower-node:hover {
+  z-index: 999 !important;
+  filter: drop-shadow(0 0 25px rgba(255, 235, 100, 1));
+}
+
+.flower-icon {
+  font-size: clamp(2rem, 6vw, 3rem);
+  filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.9));
+  animation: floatPulse 3s infinite alternate ease-in-out;
+}
+
+.tag-label {
+  background: rgba(10, 8, 20, 0.88);
+  border: 1px solid rgba(255, 220, 0, 0.75);
+  color: #fffde0;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+  font-weight: 800;
+  margin-top: 4px;
+  white-space: nowrap;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+/* Panel Inferior de Controles Adaptable */
+.controls-panel {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: rgba(12, 10, 25, 0.85);
+  padding: 10px 18px;
+  border-radius: 25px;
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 30px rgba(255, 200, 0, 0.3);
+  backdrop-filter: blur(14px);
+  pointer-events: auto;
+  max-width: 95vw;
+}
+
+.input-group, .actions-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.controls-panel input, .controls-panel select {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  padding: 7px 12px;
+  border-radius: 18px;
+  color: #fff;
+  font-size: 0.82rem;
+  outline: none;
+}
+
+.controls-panel select option {
+  background: #0e0a1a;
+  color: #fff;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ffe033, #ff8800);
+  border: none;
+  padding: 7px 16px;
+  border-radius: 18px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+  transition: transform 0.2s;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+}
+
+.btn-secondary {
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  padding: 5px 12px;
+  border-radius: 16px;
+  color: #fffae0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 215, 0, 0.3);
+}
+
+/* Modal Popup Adaptable */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(2, 2, 8, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  padding: 15px;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: rgba(18, 14, 38, 0.95);
+  border: 1px solid rgba(255, 215, 0, 0.7);
+  border-radius: 22px;
+  padding: 25px 20px;
+  width: 100%;
+  max-width: 360px;
+  max-height: 85vh;
+  overflow-y: auto;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+  position: relative;
+  transform: scale(0.85);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-card {
+  transform: scale(1);
+}
+
+.close-modal {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+}
+
+.modal-icon {
+  font-size: 3.2rem;
+  margin-bottom: 8px;
+}
+
+.modal-card h2 {
+  color: #ffe600;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+.modal-card p {
+  color: #f0e8ff;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.modal-footer {
+  font-size: 0.8rem;
+  color: #ffd700;
+  font-weight: 600;
+}
+
+@keyframes floatPulse {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(-5px) scale(1.06); }
+}
+
+/* ==========================================================================
+   REGLAS DE ADAPTABILIDAD PARA PANTALLAS PEQUEÑAS (MÓVILES)
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  .title-banner {
+    top: 12px;
+  }
+
+  .controls-panel {
+    bottom: 12px;
+    padding: 8px 12px;
+    gap: 6px;
+    width: 92vw;
+  }
+
+  .input-group input {
+    flex: 1 1 120px;
+    font-size: 0.78rem;
+    padding: 6px 10px;
+  }
+
+  .input-group select {
+    flex: 1 1 110px;
+    font-size: 0.78rem;
+    padding: 6px 8px;
+  }
+
+  .btn-primary {
+    font-size: 0.78rem;
+    padding: 6px 12px;
+  }
+
+  .btn-secondary {
+    font-size: 0.72rem;
+    padding: 5px 10px;
+  }
+
+  .modal-card {
+    padding: 20px 15px;
+  }
+}
+
+@media (max-width: 380px) {
+  .controls-panel input, 
+  .controls-panel select,
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
+
+  .actions-group {
+    flex-direction: column;
+    width: 100%;
+  }
+}
