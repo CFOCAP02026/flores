@@ -1,7 +1,3 @@
-/* ==========================================================================
-   GALAXIA DE FLORES AMARILLAS CON REPRODUCCIÓN DE MÚSICA
-   ========================================================================== */
-
 const canvas = document.getElementById('spaceCanvas');
 const ctx = canvas.getContext('2d');
 const galaxyContainer = document.getElementById('galaxyContainer');
@@ -19,7 +15,6 @@ const modalTitle = document.getElementById('modalTitle');
 const modalBody = document.getElementById('modalBody');
 
 let stars = [];
-let meteors = [];
 let particles = [];
 let rainPetals = [];
 let nodes = [];
@@ -30,11 +25,24 @@ function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
-window.addEventListener('resize', resizeCanvas);
+
+// Recalcular radios según la pantalla del celular
+function updateNodeRadii() {
+  const minDim = Math.min(window.innerWidth, window.innerHeight);
+  nodes.forEach((node, index) => {
+    // Radio responsivo adaptado a la pantalla del móvil
+    node.radius = (minDim * 0.18) + (index % 3) * (minDim * 0.08);
+  });
+}
+
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  updateNodeRadii();
+});
 resizeCanvas();
 
-// Generar Campo Estelar
-for (let i = 0; i < 280; i++) {
+// Estrellas de fondo
+for (let i = 0; i < 200; i++) {
   stars.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
@@ -44,14 +52,13 @@ for (let i = 0; i < 280; i++) {
   });
 }
 
-// Dibujar Agujero Negro Central con Disco de Luz
+// Agujero Negro Central (Adaptado a Pantalla)
 function drawBlackHole() {
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
-  const radius = Math.min(canvas.width, canvas.height) * 0.08;
+  const radius = Math.min(canvas.width, canvas.height) * 0.07;
 
-  // Disco de Luz Dorado/Naranja
-  const glow = ctx.createRadialGradient(cx, cy, radius * 0.5, cx, cy, radius * 3.5);
+  const glow = ctx.createRadialGradient(cx, cy, radius * 0.5, cx, cy, radius * 3.2);
   glow.addColorStop(0, 'rgba(255, 220, 100, 0.9)');
   glow.addColorStop(0.3, 'rgba(255, 140, 0, 0.5)');
   glow.addColorStop(0.6, 'rgba(180, 50, 0, 0.2)');
@@ -59,15 +66,14 @@ function drawBlackHole() {
 
   ctx.fillStyle = glow;
   ctx.beginPath();
-  ctx.arc(cx, cy, radius * 3.5, 0, Math.PI * 2);
+  ctx.arc(cx, cy, radius * 3.2, 0, Math.PI * 2);
   ctx.fill();
 
-  // Núcleo Negro
   ctx.fillStyle = '#000000';
   ctx.beginPath();
   ctx.arc(cx, cy, radius, 0, Math.PI * 2);
   ctx.shadowColor = 'rgba(255, 200, 50, 0.9)';
-  ctx.shadowBlur = 25;
+  ctx.shadowBlur = 20;
   ctx.fill();
   ctx.shadowBlur = 0;
 }
@@ -75,7 +81,6 @@ function drawBlackHole() {
 function drawSpace() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Fondo Espacial
   const gradient = ctx.createRadialGradient(
     canvas.width / 2, canvas.height / 2, 20,
     canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) * 0.75
@@ -86,7 +91,6 @@ function drawSpace() {
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Estrellas
   stars.forEach(s => {
     s.alpha += s.speed;
     if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
@@ -117,7 +121,7 @@ function drawSpace() {
     rainPetals.push({
       x: Math.random() * canvas.width,
       y: -20,
-      size: Math.random() * 6 + 4,
+      size: Math.random() * 5 + 3,
       vy: Math.random() * 2 + 1,
       vx: Math.sin(Math.random() * Math.PI) * 1.5,
       rotation: Math.random() * 360,
@@ -146,7 +150,7 @@ function drawSpace() {
 }
 drawSpace();
 
-// Palabras exactas del Video Viral
+// Palabras del Video Viral
 const tiktokPhrases = [
   { text: "Mi sol ☀️", icon: "🌻", note: "Eres la razón de mi sonrisa todos los días." },
   { text: "Mi destino 🌌", icon: "💐", note: "El universo me guió directamente hacia ti." },
@@ -162,7 +166,7 @@ const tiktokPhrases = [
   { text: "Contigo 💛", icon: "🌻", note: "Siempre juntos bajo el mismo cielo." }
 ];
 
-function createFlowerNode(text, icon, angle, radius, note) {
+function createFlowerNode(text, icon, angle, index, note) {
   const node = document.createElement('div');
   node.className = 'flower-node';
 
@@ -179,22 +183,27 @@ function createFlowerNode(text, icon, angle, radius, note) {
   galaxyContainer.appendChild(node);
 
   const speed = (0.0012 + Math.random() * 0.001) * (Math.random() > 0.5 ? 1 : -1);
-  const nodeData = { element: node, angle, radius, speed, text, icon, note };
+  const nodeData = { element: node, angle, radius: 0, speed, text, icon, note };
   nodes.push(nodeData);
 
-  node.addEventListener('click', (e) => {
+  // Funciona con clic y toque en pantalla de celular
+  const handleTap = (e) => {
     e.stopPropagation();
-    spawnExplosion(e.clientX, e.clientY);
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    spawnExplosion(clientX || window.innerWidth / 2, clientY || window.innerHeight / 2);
     openModal(nodeData);
-  });
+  };
+
+  node.addEventListener('click', handleTap);
 }
 
 const total = tiktokPhrases.length;
 tiktokPhrases.forEach((item, index) => {
   const angle = (index / total) * Math.PI * 2;
-  const radius = 140 + (index % 3) * 75;
-  createFlowerNode(item.text, item.icon, angle, radius, item.note);
+  createFlowerNode(item.text, item.icon, angle, index, item.note);
 });
+updateNodeRadii();
 
 function animateOrbit() {
   const cx = window.innerWidth / 2;
@@ -205,7 +214,7 @@ function animateOrbit() {
     const x = cx + Math.cos(node.angle) * node.radius;
     const y = cy + Math.sin(node.angle) * (node.radius * 0.55);
 
-    const depthScale = 0.75 + ((y - (cy - node.radius * 0.55)) / (node.radius * 1.1)) * 0.45;
+    const depthScale = 0.75 + ((y - (cy - node.radius * 0.55)) / (node.radius * 1.1 + 1)) * 0.45;
     const zIndex = Math.floor(depthScale * 100);
 
     node.element.style.left = `${x}px`;
@@ -219,12 +228,12 @@ function animateOrbit() {
 animateOrbit();
 
 function spawnExplosion(x, y) {
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 25; i++) {
     particles.push({
       x, y,
-      vx: (Math.random() - 0.5) * 10,
-      vy: (Math.random() - 0.5) * 10,
-      size: Math.random() * 4 + 1.5,
+      vx: (Math.random() - 0.5) * 8,
+      vy: (Math.random() - 0.5) * 8,
+      size: Math.random() * 3.5 + 1.5,
       alpha: 1
     });
   }
@@ -242,15 +251,15 @@ letterModal.addEventListener('click', (e) => {
   if (e.target === letterModal) letterModal.classList.remove('active');
 });
 
-// Agregar Flor Personalizada
 function addCustomFlower() {
   const text = flowerInput.value.trim() || "Mi Sol 🌻";
   const icon = iconSelect.value;
-  const radius = 130 + Math.random() * 180;
   const angle = Math.random() * Math.PI * 2;
 
-  createFlowerNode(text, icon, angle, radius, `Mensaje dedicado: "${text}". ¡Eres mi luz en el universo! ❤️`);
+  createFlowerNode(text, icon, angle, nodes.length, `Mensaje dedicado: "${text}". ¡Eres mi universo! ❤️`);
+  updateNodeRadii();
   flowerInput.value = "";
+  flowerInput.blur();
 }
 
 addBtn.addEventListener('click', addCustomFlower);
@@ -260,40 +269,39 @@ flowerInput.addEventListener('keypress', (e) => {
 
 petalRainBtn.addEventListener('click', () => {
   isRainActive = !isRainActive;
-  petalRainBtn.style.background = isRainActive ? 'rgba(255, 215, 0, 0.4)' : 'rgba(255, 215, 0, 0.12)';
+  petalRainBtn.style.background = isRainActive ? 'rgba(255, 215, 0, 0.4)' : 'rgba(255, 215, 0, 0.15)';
 });
 
-// ==========================================
-// CONTROL DE MÚSICA DE FONDO (flores.mp3)
-// ==========================================
+// Control de Música para Celular (Touch/Clic)
 function toggleMusic() {
   if (bgMusic.paused) {
     bgMusic.play().then(() => {
       isAudioPlaying = true;
-      audioBtn.innerText = '⏸️ Pausar Música';
+      audioBtn.innerText = '⏸️ Pausar';
       audioBtn.style.background = 'rgba(255, 215, 0, 0.5)';
-      audioBtn.style.boxShadow = '0 0 15px rgba(255, 215, 0, 0.8)';
     }).catch(() => {
-      alert("Asegúrate de colocar la canción en la misma carpeta y llamarla 'flores.mp3'.");
+      alert("Recuerda guardar la canción con el nombre 'flores.mp3' en la misma carpeta.");
     });
   } else {
     bgMusic.pause();
     isAudioPlaying = false;
-    audioBtn.innerText = '🎵 Reproducir Música';
-    audioBtn.style.background = 'rgba(255, 215, 0, 0.12)';
-    audioBtn.style.boxShadow = 'none';
+    audioBtn.innerText = '🎵 Música';
+    audioBtn.style.background = 'rgba(255, 215, 0, 0.15)';
   }
 }
 
 audioBtn.addEventListener('click', toggleMusic);
 
-// Iniciar música automáticamente con el primer clic del usuario
-window.addEventListener('click', () => {
+// Activar audio automáticamente con el primer toque en pantalla en Android/iPhone
+const startAudioOnTouch = () => {
   if (bgMusic.paused && !isAudioPlaying) {
     bgMusic.play().then(() => {
       isAudioPlaying = true;
-      audioBtn.innerText = '⏸️ Pausar Música';
+      audioBtn.innerText = '⏸️ Pausar';
       audioBtn.style.background = 'rgba(255, 215, 0, 0.5)';
     }).catch(() => {});
   }
-}, { once: true });
+};
+
+window.addEventListener('touchstart', startAudioOnTouch, { once: true });
+window.addEventListener('click', startAudioOnTouch, { once: true });

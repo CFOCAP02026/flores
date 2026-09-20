@@ -1,24 +1,22 @@
-/* ==========================================================================
-   GALAXIA DE FLORES AMARILLAS 21 DE SEPTIEMBRE - ESTILOS RESPONSIVE
-   ========================================================================== */
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body {
+html, body {
   background-color: #020205;
   overflow: hidden;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   color: #fff;
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
+  touch-action: manipulation;
 }
 
-/* Canvas Fondo Espacial */
+/* Canvas Espacial */
 #spaceCanvas {
   position: absolute;
   top: 0;
@@ -32,15 +30,15 @@ body {
 .galaxy-container {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   z-index: 2;
   pointer-events: none;
 }
 
-/* Header Superior Adaptable */
+/* Header Superior Responsive */
 .title-banner {
   position: fixed;
-  top: 20px;
+  top: max(12px, env(safe-area-inset-top));
   width: 100%;
   text-align: center;
   z-index: 10;
@@ -49,24 +47,24 @@ body {
 }
 
 .title-banner h1 {
-  font-size: clamp(1.1rem, 4vw, 1.7rem);
-  letter-spacing: 2px;
+  font-size: clamp(1rem, 4.5vw, 1.7rem);
+  letter-spacing: 1.5px;
   color: #ffee55;
   text-shadow: 
-    0 0 12px rgba(255, 230, 0, 0.9),
-    0 0 25px rgba(255, 165, 0, 0.8);
+    0 0 10px rgba(255, 230, 0, 0.9),
+    0 0 20px rgba(255, 165, 0, 0.8);
   font-weight: 900;
 }
 
 .title-banner p {
-  font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+  font-size: clamp(0.65rem, 2.8vw, 0.85rem);
   color: #ffd700;
-  letter-spacing: 1.5px;
-  margin-top: 4px;
+  letter-spacing: 1px;
+  margin-top: 3px;
   font-weight: 600;
 }
 
-/* Ramos y Etiquetas Flotantes Adaptables */
+/* Ramos y Etiquetas Flotantes */
 .flower-node {
   position: absolute;
   display: flex;
@@ -76,120 +74,115 @@ body {
   transform: translate(-50%, -50%);
   pointer-events: auto;
   cursor: pointer;
-  transition: filter 0.3s ease;
   will-change: transform, left, top;
-}
-
-.flower-node:hover {
-  z-index: 999 !important;
-  filter: drop-shadow(0 0 25px rgba(255, 235, 100, 1));
+  touch-action: manipulation;
 }
 
 .flower-icon {
-  font-size: clamp(2rem, 6vw, 3rem);
-  filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.9));
+  font-size: clamp(1.8rem, 7vw, 3rem);
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.9));
   animation: floatPulse 3s infinite alternate ease-in-out;
 }
 
 .tag-label {
-  background: rgba(10, 8, 20, 0.88);
-  border: 1px solid rgba(255, 220, 0, 0.75);
+  background: rgba(10, 8, 20, 0.92);
+  border: 1px solid rgba(255, 220, 0, 0.8);
   color: #fffde0;
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: clamp(0.65rem, 2.5vw, 0.82rem);
   font-weight: 800;
-  margin-top: 4px;
+  margin-top: 3px;
   white-space: nowrap;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
   backdrop-filter: blur(8px);
 }
 
-/* Panel Inferior de Controles Adaptable */
+/* Panel Inferior para Celulares */
 .controls-panel {
   position: fixed;
-  bottom: 20px;
+  bottom: max(12px, env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  background: rgba(12, 10, 25, 0.85);
-  padding: 10px 18px;
-  border-radius: 25px;
+  gap: 8px;
+  background: rgba(12, 10, 25, 0.9);
+  padding: 8px 14px;
+  border-radius: 20px;
   border: 1px solid rgba(255, 215, 0, 0.5);
-  box-shadow: 0 0 30px rgba(255, 200, 0, 0.3);
+  box-shadow: 0 0 25px rgba(255, 200, 0, 0.3);
   backdrop-filter: blur(14px);
   pointer-events: auto;
-  max-width: 95vw;
+  width: calc(100% - 24px);
+  max-width: 420px;
 }
 
 .input-group, .actions-group {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 6px;
   justify-content: center;
   width: 100%;
 }
 
-.controls-panel input, .controls-panel select {
-  background: rgba(255, 255, 255, 0.08);
+.input-group input {
+  flex: 1;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 215, 0, 0.4);
-  padding: 7px 12px;
-  border-radius: 18px;
+  padding: 6px 10px;
+  border-radius: 16px;
   color: #fff;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   outline: none;
 }
 
-.controls-panel select option {
-  background: #0e0a1a;
+.input-group select {
+  background: rgba(18, 14, 38, 0.95);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  padding: 6px 8px;
+  border-radius: 16px;
   color: #fff;
+  font-size: 0.78rem;
+  outline: none;
 }
 
 .btn-primary {
   background: linear-gradient(135deg, #ffe033, #ff8800);
   border: none;
-  padding: 7px 16px;
-  border-radius: 18px;
+  padding: 6px 12px;
+  border-radius: 16px;
   color: #000;
   font-weight: bold;
+  font-size: 0.78rem;
   cursor: pointer;
-  box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
-  transition: transform 0.2s;
-}
-
-.btn-primary:hover {
-  transform: scale(1.05);
+  white-space: nowrap;
 }
 
 .btn-secondary {
-  background: rgba(255, 215, 0, 0.12);
+  background: rgba(255, 215, 0, 0.15);
   border: 1px solid rgba(255, 215, 0, 0.4);
-  padding: 5px 12px;
-  border-radius: 16px;
+  padding: 6px 12px;
+  border-radius: 14px;
   color: #fffae0;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  flex: 1;
+  text-align: center;
 }
 
-.btn-secondary:hover {
-  background: rgba(255, 215, 0, 0.3);
-}
-
-/* Modal Popup Adaptable */
+/* Modal Popup Adaptado a Móvil */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
-  background: rgba(2, 2, 8, 0.8);
+  height: 100dvh;
+  background: rgba(2, 2, 8, 0.85);
   backdrop-filter: blur(8px);
   z-index: 2000;
   display: flex;
@@ -198,7 +191,7 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  padding: 15px;
+  padding: 20px;
 }
 
 .modal-overlay.active {
@@ -207,117 +200,51 @@ body {
 }
 
 .modal-card {
-  background: rgba(18, 14, 38, 0.95);
+  background: rgba(18, 14, 38, 0.96);
   border: 1px solid rgba(255, 215, 0, 0.7);
-  border-radius: 22px;
-  padding: 25px 20px;
+  border-radius: 20px;
+  padding: 22px 18px;
   width: 100%;
-  max-width: 360px;
-  max-height: 85vh;
-  overflow-y: auto;
+  max-width: 340px;
   text-align: center;
-  box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 35px rgba(255, 215, 0, 0.4);
   position: relative;
-  transform: scale(0.85);
-  transition: transform 0.3s ease;
-}
-
-.modal-overlay.active .modal-card {
-  transform: scale(1);
 }
 
 .close-modal {
   position: absolute;
-  top: 12px;
-  right: 18px;
-  font-size: 1.4rem;
-  color: rgba(255, 255, 255, 0.6);
-  cursor: pointer;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 5px;
 }
 
 .modal-icon {
-  font-size: 3.2rem;
-  margin-bottom: 8px;
+  font-size: 3rem;
+  margin-bottom: 6px;
 }
 
 .modal-card h2 {
   color: #ffe600;
-  font-size: 1.3rem;
-  margin-bottom: 8px;
+  font-size: 1.2rem;
+  margin-bottom: 6px;
 }
 
 .modal-card p {
   color: #f0e8ff;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   line-height: 1.4;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .modal-footer {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: #ffd700;
   font-weight: 600;
 }
 
 @keyframes floatPulse {
   from { transform: translateY(0) scale(1); }
-  to { transform: translateY(-5px) scale(1.06); }
-}
-
-/* ==========================================================================
-   REGLAS DE ADAPTABILIDAD PARA PANTALLAS PEQUEÑAS (MÓVILES)
-   ========================================================================== */
-
-@media (max-width: 600px) {
-  .title-banner {
-    top: 12px;
-  }
-
-  .controls-panel {
-    bottom: 12px;
-    padding: 8px 12px;
-    gap: 6px;
-    width: 92vw;
-  }
-
-  .input-group input {
-    flex: 1 1 120px;
-    font-size: 0.78rem;
-    padding: 6px 10px;
-  }
-
-  .input-group select {
-    flex: 1 1 110px;
-    font-size: 0.78rem;
-    padding: 6px 8px;
-  }
-
-  .btn-primary {
-    font-size: 0.78rem;
-    padding: 6px 12px;
-  }
-
-  .btn-secondary {
-    font-size: 0.72rem;
-    padding: 5px 10px;
-  }
-
-  .modal-card {
-    padding: 20px 15px;
-  }
-}
-
-@media (max-width: 380px) {
-  .controls-panel input, 
-  .controls-panel select,
-  .btn-primary,
-  .btn-secondary {
-    width: 100%;
-    text-align: center;
-  }
-
-  .actions-group {
-    flex-direction: column;
-    width: 100%;
-  }
+  to { transform: translateY(-4px) scale(1.05); }
 }

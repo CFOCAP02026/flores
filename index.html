@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Galaxia de Flores Amarillas 21 de Septiembre 🌻✨</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -19,19 +19,19 @@
 
   <div class="controls-panel">
     <div class="input-group">
-      <input type="text" id="flowerInput" placeholder="Añade una frase o palabra..." maxlength="20">
+      <input type="text" id="flowerInput" placeholder="Añade una frase..." maxlength="20">
       <select id="iconSelect">
-        <option value="🌻">🌻 Ramo de Girasoles</option>
-        <option value="💐">💐 Ramo de Rosas Amarillas</option>
-        <option value="⭐">⭐ Estrella Dorada</option>
-        <option value="💛">💛 Corazón Brillantina</option>
+        <option value="🌻">🌻 Girasoles</option>
+        <option value="💐">💐 Rosas</option>
+        <option value="⭐">⭐ Estrella</option>
+        <option value="💛">💛 Corazón</option>
       </select>
       <button id="addBtn" class="btn-primary">+ Agregar</button>
     </div>
 
     <div class="actions-group">
-      <button id="petalRainBtn" class="btn-secondary">🌧️ Lluvia de Pétalos</button>
-      <button id="audioBtn" class="btn-secondary">🎵 Música Espacial</button>
+      <button id="petalRainBtn" class="btn-secondary">🌧️ Lluvia Pétalos</button>
+      <button id="audioBtn" class="btn-secondary">🎵 Música</button>
     </div>
   </div>
 
@@ -44,7 +44,8 @@
       <div class="modal-footer">Para ti con todo mi amor ❤️</div>
     </div>
   </div>
-  <audio id="bgMusic" src="Chino & Nacho - Niña Bonita [ Lyrics Letras ].mp3" loop></audio>
+
+  <audio id="bgMusic" src="flores.mp3" loop preload="auto"></audio>
 
   <script src="script.js"></script>
 </body>
